@@ -1,24 +1,22 @@
 """User authentication helpers using Supabase."""
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-# Placeholder for a Supabase client
-_supabase_client = None
-
-
-def login_user() -> Dict[str, Any]:
-    """Authenticate a user via Supabase.
-
-    Returns a dictionary with user information on success.
-    """
-    raise NotImplementedError("login_user needs Supabase integration")
+import streamlit as st
 
 
-def fetch_user_data() -> Dict[str, Any]:
-    """Return the authenticated user's data."""
-    raise NotImplementedError("fetch_user_data needs Supabase integration")
+def login_user(username: str) -> Dict[str, Any]:
+    """Authenticate a user and store their info in session state."""
+    user_data = {"id": username, "username": username}
+    st.session_state["user"] = user_data
+    return user_data
+
+
+def fetch_user_data() -> Optional[Dict[str, Any]]:
+    """Return the authenticated user's data if available."""
+    return st.session_state.get("user")
 
 
 def logout_user() -> None:
-    """Log out the current user."""
-    raise NotImplementedError("logout_user needs Supabase integration")
+    """Log out the current user and clear session data."""
+    st.session_state.pop("user", None)
